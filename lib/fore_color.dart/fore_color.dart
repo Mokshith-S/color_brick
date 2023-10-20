@@ -52,7 +52,7 @@ class _ColorBrickForegroundState extends State<ColorBrickForeground> {
                 )),
                 context: context,
                 builder: (ctx) => Container(
-                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   height: 350,
                   child: ColorModule(
                     colors: widget.getColorMap,
