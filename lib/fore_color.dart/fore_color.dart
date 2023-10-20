@@ -1,14 +1,26 @@
+import 'package:color_brick/fore_color.dart/color_module.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ColorBrickForeground extends StatefulWidget {
-  const ColorBrickForeground({super.key, required this.backgroundClr});
+  const ColorBrickForeground(
+      {super.key, required this.backgroundClr, required this.getColorMap});
   final Color backgroundClr;
+  final Map<String, Color> getColorMap;
+
   @override
   State<ColorBrickForeground> createState() => _ColorBrickForegroundState();
 }
 
 class _ColorBrickForegroundState extends State<ColorBrickForeground> {
+  Color fontColor = Colors.black;
+
+  void changeFontColor(Color color) {
+    setState(() {
+      fontColor = color;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,16 +28,59 @@ class _ColorBrickForegroundState extends State<ColorBrickForeground> {
       height: double.infinity,
       color: widget.backgroundClr,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Color Brick',
-            style: GoogleFonts.montserrat(
-                fontSize: 21, fontWeight: FontWeight.w700),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            child: Text(
+              'Color Brick',
+              style: GoogleFonts.montserrat(
+                  fontSize: 24, fontWeight: FontWeight.w700, color: fontColor),
+            ),
           ),
           const SizedBox(
             height: 10,
+          ),
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                  topEnd: Radius.circular(30),
+                  topStart: Radius.circular(30),
+                )),
+                context: context,
+                builder: (ctx) => Container(
+                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  height: 350,
+                  child: ColorModule(
+                    colors: widget.getColorMap,
+                    changeFontColor: changeFontColor,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadiusDirectional.only(
+                  topStart: Radius.circular(30),
+                  topEnd: Radius.circular(30),
+                ),
+              ),
+              height: 60,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'Text Color',
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

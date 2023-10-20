@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 
 class ColorBrickBlock extends StatelessWidget {
   const ColorBrickBlock(
-      {super.key, required this.colorScheme, required this.changeInterface});
+      {super.key,
+      required this.colorScheme,
+      required this.changeInterface,
+      required this.colorMap});
   final ColorScheme colorScheme;
   final void Function(int slideNumber, Color bgColor) changeInterface;
+  final void Function(Map<String, Color>) colorMap;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,7 @@ class ColorBrickBlock extends StatelessWidget {
       'scrim': colorScheme.scrim,
       'shadow': colorScheme.shadow,
     };
+    colorMap(colorSchemeProperty);
 
     return Expanded(
       child: ListView.builder(

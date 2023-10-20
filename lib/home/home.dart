@@ -3,37 +3,72 @@ import 'package:color_brick/home/color_field.dart';
 import 'package:flutter/material.dart';
 
 class ColorBrickHome extends StatefulWidget {
-  const ColorBrickHome(
-      {super.key, required this.changeInterface, required this.setGobalScheme});
+  const ColorBrickHome({
+    super.key,
+    required this.changeInterface,
+    required this.setGobalScheme,
+    required this.selectedColorInfo,
+    required this.colorMap,
+  });
 
   final void Function(int slideNumber, Color bgColor) changeInterface;
-  final void Function(ColorScheme) setGobalScheme;
+  final void Function(ColorScheme, int, int, int, int) setGobalScheme;
+  final List<Object?> selectedColorInfo;
+  final void Function(Map<String, Color>) colorMap;
 
   @override
   State<ColorBrickHome> createState() => _ColorBrickHomeState();
 }
 
 class _ColorBrickHomeState extends State<ColorBrickHome> {
-  final redController = TextEditingController();
-  final greenController = TextEditingController();
-  final blueController = TextEditingController();
-  final opacityController = TextEditingController();
+  @override
+  void initState() {
+    redController = TextEditingController()
+      ..text = widget.selectedColorInfo[2] == null
+          ? ''
+          : widget.selectedColorInfo[2].toString();
+
+    greenController = TextEditingController()
+      ..text = widget.selectedColorInfo[3] == null
+          ? ''
+          : widget.selectedColorInfo[3].toString();
+
+    blueController = TextEditingController()
+      ..text = widget.selectedColorInfo[4] == null
+          ? ''
+          : widget.selectedColorInfo[4].toString();
+
+    opacityController = TextEditingController()
+      ..text = widget.selectedColorInfo[1] == null
+          ? ''
+          : widget.selectedColorInfo[1].toString();
+
+    generateColorScheme = widget.selectedColorInfo[0] == null
+        ? null
+        : (widget.selectedColorInfo[0] as ColorScheme);
+    super.initState();
+  }
+
+  TextEditingController? redController;
+  TextEditingController? greenController;
+  TextEditingController? blueController;
+  TextEditingController? opacityController;
   ColorScheme? generateColorScheme;
 
   @override
   void dispose() {
-    redController.dispose();
-    greenController.dispose();
-    blueController.dispose();
-    opacityController.dispose();
+    redController!.dispose();
+    greenController!.dispose();
+    blueController!.dispose();
+    opacityController!.dispose();
     super.dispose();
   }
 
   void generateColor() {
-    int alpha = int.parse(opacityController.text);
-    int red = int.parse(redController.text);
-    int green = int.parse(greenController.text);
-    int blue = int.parse(blueController.text);
+    int alpha = int.parse(opacityController!.text);
+    int red = int.parse(redController!.text);
+    int green = int.parse(greenController!.text);
+    int blue = int.parse(blueController!.text);
     setState(
       () {
         generateColorScheme = ColorScheme.fromSeed(
@@ -41,7 +76,8 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
         );
       },
     );
-    widget.setGobalScheme(generateColorScheme!);
+    widget.setGobalScheme(generateColorScheme!, alpha, red, green, blue);
+    FocusScope.of(context).unfocus();
   }
 
   @override
@@ -58,21 +94,21 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
             ),
             ColorField(
               colorCode: Colors.red,
-              controlAgent: redController,
+              controlAgent: redController!,
             ),
             const SizedBox(
               width: 10,
             ),
             ColorField(
               colorCode: Colors.green,
-              controlAgent: greenController,
+              controlAgent: greenController!,
             ),
             const SizedBox(
               width: 10,
             ),
             ColorField(
               colorCode: Colors.blue,
-              controlAgent: blueController,
+              controlAgent: blueController!,
             ),
             const SizedBox(
               width: 10,
@@ -138,6 +174,7 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
           ColorBrickBlock(
             colorScheme: generateColorScheme!,
             changeInterface: widget.changeInterface,
+            colorMap: widget.colorMap,
           ),
       ],
     );

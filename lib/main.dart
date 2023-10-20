@@ -17,10 +17,29 @@ class ColorBrickBranch extends StatefulWidget {
 class _ColorBrickBrachState extends State<ColorBrickBranch> {
   Widget? screen;
   ColorScheme? generatedColorScheme;
+  int? alpha;
+  int? red;
+  int? green;
+  int? blue;
+  Map<String, Color> globalMap = {};
 
-  void setColorScheme(ColorScheme clrScheme) {
+  List<Object?> get selectedColorValue =>
+      [generatedColorScheme, alpha, red, green, blue];
+
+  void setColorScheme(ColorScheme clrScheme, int a, int r, int g, int b) {
     generatedColorScheme = clrScheme;
+    alpha = a;
+    red = r;
+    green = g;
+    blue = b;
   }
+
+  void colorBrickMap(Map<String, Color> colorMap) {
+    globalMap.clear();
+    globalMap.addAll(colorMap);
+  }
+
+  Map<String, Color> get getColors => globalMap;
 
   void changeScreen(int slideNumber, Color? bgclr) {
     setState(() {
@@ -28,10 +47,13 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
         screen = ColorBrickHome(
           changeInterface: changeScreen,
           setGobalScheme: setColorScheme,
+          selectedColorInfo: selectedColorValue,
+          colorMap: colorBrickMap,
         );
       } else if (slideNumber == 2) {
         screen = ColorBrickForeground(
           backgroundClr: bgclr!,
+          getColorMap: getColors,
         );
       }
     });
@@ -40,6 +62,7 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.balooBhai2(
@@ -60,10 +83,12 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
                     screen = ColorBrickHome(
                       changeInterface: changeScreen,
                       setGobalScheme: setColorScheme,
+                      selectedColorInfo: selectedColorValue,
+                      colorMap: colorBrickMap,
                     );
                   });
                 },
-                color: Colors.blueAccent,
+                color: const Color.fromARGB(255, 112, 27, 160),
                 icon: const Icon(Icons.home_rounded))
           ],
           title: const Text(
@@ -75,6 +100,8 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
             ColorBrickHome(
               changeInterface: changeScreen,
               setGobalScheme: setColorScheme,
+              selectedColorInfo: selectedColorValue,
+              colorMap: colorBrickMap,
             ),
       ),
     );
