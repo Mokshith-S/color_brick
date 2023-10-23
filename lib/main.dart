@@ -32,6 +32,7 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
     red = r;
     green = g;
     blue = b;
+    print(r);
   }
 
   void colorBrickMap(Map<String, Color> colorMap) {

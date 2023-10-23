@@ -1,6 +1,7 @@
 import 'package:color_brick/home/color_block.dart';
 import 'package:color_brick/home/color_field.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ColorBrickHome extends StatefulWidget {
   const ColorBrickHome({
@@ -65,18 +66,52 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
   }
 
   void generateColor() {
-    int alpha = int.parse(opacityController!.text);
-    int red = int.parse(redController!.text);
-    int green = int.parse(greenController!.text);
-    int blue = int.parse(blueController!.text);
-    setState(
-      () {
-        generateColorScheme = ColorScheme.fromSeed(
-          seedColor: Color.fromARGB(alpha, red, green, blue),
+    String errorMsg = '';
+    int? alpha = int.tryParse(opacityController!.text);
+    int? red = int.tryParse(redController!.text);
+    int? green = int.tryParse(greenController!.text);
+    int? blue = int.tryParse(blueController!.text);
+
+    if (alpha != null && red != null && green != null && blue != null) {
+      if ((0 <= alpha && alpha <= 255) &&
+          (0 <= red && red <= 255) &&
+          (0 <= green && green <= 255) &&
+          (0 <= blue && blue <= 255)) {
+        setState(
+          () {
+            generateColorScheme = ColorScheme.fromSeed(
+              seedColor: Color.fromARGB(alpha, red, green, blue),
+            );
+          },
         );
-      },
+        widget.setGobalScheme(generateColorScheme!, alpha, red, green, blue);
+        FocusScope.of(context).unfocus();
+        return;
+      } else {
+        errorMsg = 'Invalid color code';
+      }
+    } else {
+      errorMsg = 'Enter value between 0 and 255';
+    }
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          )
+        ],
+        title: Text(
+          errorMsg,
+          style: GoogleFonts.montserrat(
+              color: Colors.white, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: const Color.fromARGB(255, 255, 146, 146),
+      ),
     );
-    widget.setGobalScheme(generateColorScheme!, alpha, red, green, blue);
     FocusScope.of(context).unfocus();
   }
 
