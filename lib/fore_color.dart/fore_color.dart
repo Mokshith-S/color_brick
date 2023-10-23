@@ -52,6 +52,13 @@ class _ColorBrickForegroundState extends State<ColorBrickForeground> {
                 )),
                 context: context,
                 builder: (ctx) => Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2),
+                    borderRadius: const BorderRadiusDirectional.only(
+                      topStart: Radius.circular(30),
+                      topEnd: Radius.circular(30),
+                    ),
+                  ),
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   height: 350,
                   child: ColorModule(
@@ -62,9 +69,12 @@ class _ColorBrickForegroundState extends State<ColorBrickForeground> {
               );
             },
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadiusDirectional.only(
+                border: Border.all(
+                  width: 2,
+                ),
+                borderRadius: const BorderRadiusDirectional.only(
                   topStart: Radius.circular(30),
                   topEnd: Radius.circular(30),
                 ),
