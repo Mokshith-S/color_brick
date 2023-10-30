@@ -1,18 +1,19 @@
-import 'dart:ui';
-
+import 'package:color_brick/provider/colorscheme_provider.dart';
+import 'package:color_brick/provider/font_color_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ColorModule extends StatelessWidget {
+class ColorModule extends ConsumerWidget {
   const ColorModule({
     super.key,
-    required this.colors,
-    required this.changeFontColor,
   });
-  final Map<String, Color> colors;
-  final void Function(Color) changeFontColor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final fontColor = ref.read(fontColorProvider);
+    final colors = ref.read(colorSchemeColorProvider);
+
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -20,33 +21,29 @@ class ColorModule extends StatelessWidget {
       ),
       itemCount: colors.length,
       itemBuilder: (context, index) {
-        return Container(
-          alignment: Alignment.topLeft,
-          child: TextButton(
-            onPressed: () {
-              changeFontColor(colors[colors.keys.toList()[index]]!);
-              Navigator.pop(context);
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: Icon(
-                    Icons.square_rounded,
-                    size: 18,
-                    color: colors[colors.keys.toList()[index]],
+        return InkWell(
+          onTap: () => ref
+              .read(fontColorProvider.notifier)
+              .changeFontColor(colors[colors.keys.toList()[index]]!),
+          child: Container(
+            decoration: BoxDecoration(
+              color: colors[colors.keys.toList()[index]],
+              border: Border.all(
+                width: 1,
+                color: Colors.white,
+              ),
+            ),
+            child: Container(
+              color: Colors.white10,
+              child: Center(
+                child: Text(
+                  colors.keys.toList()[index],
+                  style: GoogleFonts.montserrat(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(colors.keys.toList()[index]),
-              ],
+              ),
             ),
           ),
         );

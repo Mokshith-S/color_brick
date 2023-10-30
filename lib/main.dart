@@ -1,10 +1,15 @@
 import 'package:color_brick/fore_color.dart/fore_color.dart';
 import 'package:color_brick/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const ColorBrickBranch());
+  runApp(
+    const ProviderScope(
+      child: ColorBrickBranch(),
+    ),
+  );
 }
 
 class ColorBrickBranch extends StatefulWidget {
@@ -16,45 +21,16 @@ class ColorBrickBranch extends StatefulWidget {
 
 class _ColorBrickBrachState extends State<ColorBrickBranch> {
   Widget? screen;
-  ColorScheme? generatedColorScheme;
-  int? alpha;
-  int? red;
-  int? green;
-  int? blue;
-  Map<String, Color> globalMap = {};
-
-  List<Object?> get selectedColorValue =>
-      [generatedColorScheme, alpha, red, green, blue];
-
-  void setColorScheme(ColorScheme clrScheme, int a, int r, int g, int b) {
-    generatedColorScheme = clrScheme;
-    alpha = a;
-    red = r;
-    green = g;
-    blue = b;
-    print(r);
-  }
-
-  void colorBrickMap(Map<String, Color> colorMap) {
-    globalMap.clear();
-    globalMap.addAll(colorMap);
-  }
-
-  Map<String, Color> get getColors => globalMap;
 
   void changeScreen(int slideNumber, Color? bgclr) {
     setState(() {
       if (slideNumber == 1) {
         screen = ColorBrickHome(
           changeInterface: changeScreen,
-          setGobalScheme: setColorScheme,
-          selectedColorInfo: selectedColorValue,
-          colorMap: colorBrickMap,
         );
       } else if (slideNumber == 2) {
         screen = ColorBrickForeground(
           backgroundClr: bgclr!,
-          getColorMap: getColors,
         );
       }
     });
@@ -83,9 +59,6 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
                   setState(() {
                     screen = ColorBrickHome(
                       changeInterface: changeScreen,
-                      setGobalScheme: setColorScheme,
-                      selectedColorInfo: selectedColorValue,
-                      colorMap: colorBrickMap,
                     );
                   });
                 },
@@ -100,9 +73,6 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
         body: screen ??
             ColorBrickHome(
               changeInterface: changeScreen,
-              setGobalScheme: setColorScheme,
-              selectedColorInfo: selectedColorValue,
-              colorMap: colorBrickMap,
             ),
       ),
     );

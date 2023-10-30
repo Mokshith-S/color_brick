@@ -1,60 +1,30 @@
+import 'package:color_brick/home/brightmode.dart';
 import 'package:color_brick/home/color_block.dart';
 import 'package:color_brick/home/color_field.dart';
+import 'package:color_brick/provider/colorscheme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ColorBrickHome extends StatefulWidget {
+class ColorBrickHome extends ConsumerStatefulWidget {
   const ColorBrickHome({
     super.key,
     required this.changeInterface,
-    required this.setGobalScheme,
-    required this.selectedColorInfo,
-    required this.colorMap,
   });
 
   final void Function(int slideNumber, Color bgColor) changeInterface;
-  final void Function(ColorScheme, int, int, int, int) setGobalScheme;
-  final List<Object?> selectedColorInfo;
-  final void Function(Map<String, Color>) colorMap;
 
   @override
-  State<ColorBrickHome> createState() => _ColorBrickHomeState();
+  ConsumerState<ColorBrickHome> createState() => _ColorBrickHomeState();
 }
 
-class _ColorBrickHomeState extends State<ColorBrickHome> {
-  @override
-  void initState() {
-    redController = TextEditingController()
-      ..text = widget.selectedColorInfo[2] == null
-          ? ''
-          : widget.selectedColorInfo[2].toString();
-
-    greenController = TextEditingController()
-      ..text = widget.selectedColorInfo[3] == null
-          ? ''
-          : widget.selectedColorInfo[3].toString();
-
-    blueController = TextEditingController()
-      ..text = widget.selectedColorInfo[4] == null
-          ? ''
-          : widget.selectedColorInfo[4].toString();
-
-    opacityController = TextEditingController()
-      ..text = widget.selectedColorInfo[1] == null
-          ? ''
-          : widget.selectedColorInfo[1].toString();
-
-    generateColorScheme = widget.selectedColorInfo[0] == null
-        ? null
-        : (widget.selectedColorInfo[0] as ColorScheme);
-    super.initState();
-  }
-
+class _ColorBrickHomeState extends ConsumerState<ColorBrickHome> {
   TextEditingController? redController;
   TextEditingController? greenController;
   TextEditingController? blueController;
   TextEditingController? opacityController;
-  ColorScheme? generateColorScheme;
+
+  bool colorBlock = false;
 
   @override
   void dispose() {
@@ -66,6 +36,7 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
   }
 
   void generateColor() {
+    colorBlock = true;
     String errorMsg = '';
     int? alpha = int.tryParse(opacityController!.text);
     int? red = int.tryParse(redController!.text);
@@ -77,14 +48,10 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
           (0 <= red && red <= 255) &&
           (0 <= green && green <= 255) &&
           (0 <= blue && blue <= 255)) {
-        setState(
-          () {
-            generateColorScheme = ColorScheme.fromSeed(
-              seedColor: Color.fromARGB(alpha, red, green, blue),
-            );
-          },
-        );
-        widget.setGobalScheme(generateColorScheme!, alpha, red, green, blue);
+        ref
+            .read(colorSchemeProvider.notifier)
+            .getColorSchemeValue(alpha, red, green, blue);
+
         FocusScope.of(context).unfocus();
         return;
       } else {
@@ -117,6 +84,19 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
 
   @override
   Widget build(BuildContext context) {
+    final initialColorValue = ref.watch(colorSchemeProvider);
+    redController = TextEditingController()
+      ..text = initialColorValue[1].toString();
+
+    greenController = TextEditingController()
+      ..text = initialColorValue[2].toString();
+
+    blueController = TextEditingController()
+      ..text = initialColorValue[3].toString();
+
+    opacityController = TextEditingController()
+      ..text = initialColorValue[0].toString();
+
     return Column(
       children: [
         const SizedBox(
@@ -174,6 +154,10 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
             const SizedBox(
               width: 10,
             ),
+            const BrightMode(),
+            const SizedBox(
+              width: 10,
+            ),
             TextButton(
               onPressed: generateColor,
               child: const Row(
@@ -205,11 +189,9 @@ class _ColorBrickHomeState extends State<ColorBrickHome> {
           height: 1,
           color: Colors.black,
         ),
-        if (generateColorScheme != null)
+        if (colorBlock)
           ColorBrickBlock(
-            colorScheme: generateColorScheme!,
             changeInterface: widget.changeInterface,
-            colorMap: widget.colorMap,
           ),
       ],
     );
