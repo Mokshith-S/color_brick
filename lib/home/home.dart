@@ -86,7 +86,6 @@ class _ColorBrickHomeState extends ConsumerState<ColorBrickHome> {
   @override
   Widget build(BuildContext context) {
     final initialColorValue = ref.watch(colorSchemeProvider);
-    print('go through');
     redController = TextEditingController()
       ..text = initialColorValue.isEmpty ? '' : initialColorValue[1].toString();
 
