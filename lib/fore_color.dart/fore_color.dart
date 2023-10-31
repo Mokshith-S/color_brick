@@ -21,11 +21,11 @@ class ColorBrickForeground extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            margin: const EdgeInsets.symmetric(vertical: 60),
             child: Text(
               'Color Brick',
               style: GoogleFonts.montserrat(
-                  fontSize: 24,
+                  fontSize: 30,
                   fontWeight: FontWeight.w700,
                   color: ref.watch(fontColorProvider)),
             ),
@@ -35,7 +35,6 @@ class ColorBrickForeground extends ConsumerWidget {
           ),
           Expanded(
             child: Container(
-              margin: const EdgeInsets.only(top: 40),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(width: 3),
