@@ -42,10 +42,10 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
         appBarTheme: AppBarTheme(
-          titleTextStyle: GoogleFonts.balooBhai2(
+          titleTextStyle: GoogleFonts.montserrat(
             letterSpacing: 1,
             fontSize: 24,
-            color: const Color.fromARGB(255, 112, 27, 160),
+            color: const Color.fromARGB(255, 255, 255, 255),
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.w800,
           ),
@@ -62,13 +62,13 @@ class _ColorBrickBrachState extends State<ColorBrickBranch> {
                     );
                   });
                 },
-                color: const Color.fromARGB(255, 112, 27, 160),
+                color: const Color.fromARGB(255, 255, 255, 255),
                 icon: const Icon(Icons.home_rounded))
           ],
           title: const Text(
             "Color Brick",
           ),
-          backgroundColor: const Color.fromARGB(255, 252, 245, 95),
+          backgroundColor: const Color.fromARGB(255, 80, 94, 163),
         ),
         body: screen ??
             ColorBrickHome(

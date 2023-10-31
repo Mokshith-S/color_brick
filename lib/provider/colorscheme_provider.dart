@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ColorSchemeNotifier extends StateNotifier<List<int>> {
-  ColorSchemeNotifier() : super([0, 0, 0, 0]);
+  ColorSchemeNotifier() : super([]);
 
   void getColorSchemeValue(int alpha, int red, int green, int blue) {
     state = [alpha, red, green, blue];
