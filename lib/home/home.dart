@@ -98,17 +98,7 @@ class _ColorBrickHomeState extends ConsumerState<ColorBrickHome> {
     opacityController = TextEditingController()
       ..text = initialColorValue.isEmpty ? '' : initialColorValue[0].toString();
 
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(180, 53, 0, 104),
-            Color.fromARGB(180, 255, 105, 120)
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+    return SizedBox(
       child: Column(
         children: [
           const SizedBox(
@@ -153,7 +143,6 @@ class _ColorBrickHomeState extends ConsumerState<ColorBrickHome> {
                 width: MediaQuery.of(context).size.width / 3 - 15,
                 child: TextField(
                   style: GoogleFonts.montserrat(
-                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                   controller: opacityController,
@@ -163,7 +152,7 @@ class _ColorBrickHomeState extends ConsumerState<ColorBrickHome> {
                   ],
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.visibility),
-                    prefixIconColor: Colors.white70,
+                    prefixIconColor: Colors.black54,
                   ),
                 ),
               ),
@@ -183,7 +172,7 @@ class _ColorBrickHomeState extends ConsumerState<ColorBrickHome> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.amber,
+                        color: Colors.black,
                       ),
                     ),
                   ],

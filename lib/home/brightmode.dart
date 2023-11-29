@@ -15,7 +15,7 @@ class BrightMode extends ConsumerWidget {
       onPressed: () {
         ref.read(brightnessProvider.notifier).controllBrightness();
       },
-      icon: Icon(brightnessIcon, color: Colors.white),
+      icon: Icon(brightnessIcon),
     );
   }
 }

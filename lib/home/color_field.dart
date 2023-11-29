@@ -19,7 +19,7 @@ class _ColorFieldState extends ConsumerState<ColorField> {
     return Expanded(
       child: TextField(
         style: GoogleFonts.montserrat(
-            color: Colors.white, fontWeight: FontWeight.bold),
+             fontWeight: FontWeight.bold),
         inputFormatters: [LengthLimitingTextInputFormatter(3)],
         keyboardType: TextInputType.number,
         controller: widget.controlAgent,
